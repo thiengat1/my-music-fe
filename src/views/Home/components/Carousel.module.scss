@@ -1,0 +1,16 @@
+.captionText {
+  text-shadow: 0 0 3px rgba($color: #000000, $alpha: 0.3);
+}
+.nameText{
+    text-shadow: 0 0 3px rgba($color: #000000, $alpha: 0.3);
+    cursor: pointer;
+    &:hover {
+      opacity: 0.8;
+    }
+}
+.carouselImage {
+  display: block;
+  width: 100%;
+  height: 92vh;
+  cursor: pointer;
+}

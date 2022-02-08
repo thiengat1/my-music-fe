@@ -1,0 +1,22 @@
+.container {
+  a {
+    text-decoration: none;
+    text-transform: uppercase;
+  }
+}
+.menuMain {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  a {
+    &:hover {
+      color: unset;
+      opacity: 0.8;
+    }
+  }
+}
+.active {
+  a {
+    color: red !important;
+  }
+}

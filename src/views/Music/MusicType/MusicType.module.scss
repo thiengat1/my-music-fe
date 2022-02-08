@@ -1,0 +1,33 @@
+.container{
+    padding:10px
+}
+.cardImage{
+    height: 30vh;
+    cursor: pointer;
+    &:hover{
+        opacity: 0.8;
+    }
+}
+.cartTitle{
+    height: 1.8rem;
+    line-height: 1.8rem;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    cursor: pointer;
+    &:hover{
+        opacity: 0.8;
+    }
+}
+.cartDescription{
+    height: 3.6rem;
+    line-height: 1.8rem;
+    overflow: hidden;
+    display: block;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+}
+.viewButton{
+    width: 100%;
+}

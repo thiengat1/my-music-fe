@@ -2,7 +2,7 @@
  * @Description:
  * @Author: Lewis
  * @Date: 2022-01-09 23:15:09
- * @LastEditTime: 2022-01-25 23:06:58
+ * @LastEditTime: 2022-03-05 23:45:50
  * @LastEditors: Lewis
  */
 
@@ -15,12 +15,29 @@ import {
   getMusicByTypeSuccess,
   getMusicByTypeFailure,
   findMusicByIdSuccess,
-  findMusicByIdFailure
+  findMusicByIdFailure,
+  getMyMusicSuccess,
+  getMyMusicFailure,
+  searchMusicSuccess,
+  searchMusicFailure,
+  getCommentSuccess,
+  getCommentFailure,
+  saveCommentSuccess,
+  saveCommentFailure
 } from "./music.actions";
-import {setShowModal} from '../auth/auth.actions'
+import { setShowModal } from "../auth/auth.actions";
 import musicActionType from "./music.type";
 
-import { getMusicTop10, createMusic, getMusicByType,findMusicById } from "../../api/music";
+import {
+  getMusicTop10,
+  createMusic,
+  getMusicByType,
+  findMusicById,
+  getMyMusic,
+  searchMusic,
+} from "../../api/music";
+import { toast } from "react-toastify";
+import { getComment,saveComment } from "../../api/comment";
 
 function* fetchMusicTop10({ payload }) {
   try {
@@ -39,6 +56,7 @@ function* createMusicStart({ payload }) {
     let res = yield createMusic(payload);
     yield put(createMusicSuccess({ data: res.data }));
     yield put(setShowModal(false));
+    toast.success("success");
   } catch (err) {
     createMusicFailure({ error: err });
   }
@@ -63,25 +81,81 @@ function* onFetchMusicByType() {
 }
 
 function* fetchFindMusicById({ payload }) {
-    try {
-        console.log('payload',payload);
-      const { videoId } = payload;
-      let res = yield findMusicById(videoId);
-      yield put(findMusicByIdSuccess({ data: res.data }));
-    } catch (err) {
-        findMusicByIdFailure({ error: err });
-    }
+  try {
+    const { videoId } = payload;
+    let res = yield findMusicById(videoId);
+    yield put(findMusicByIdSuccess({ data: res.data }));
+  } catch (err) {
+    findMusicByIdFailure({ error: err });
   }
-  
-  function* onFetchFindMusicById() {
-    yield takeLatest(musicActionType.FIND_MUSIC_BY_ID_START, fetchFindMusicById);
+}
+
+function* onFetchFindMusicById() {
+  yield takeLatest(musicActionType.FIND_MUSIC_BY_ID_START, fetchFindMusicById);
+}
+
+function* fetchMyMusic({ payload }) {
+  try {
+    let res = yield getMyMusic();
+    yield put(getMyMusicSuccess({ data: res.data }));
+  } catch (err) {
+    getMyMusicFailure({ error: err });
   }
+}
+
+function* onFetchMyMusic() {
+  yield takeLatest(musicActionType.GET_MY_MUSIC_START, fetchMyMusic);
+}
+
+function* fetchSearchMusic({ payload }) {
+  try {
+    let res = yield searchMusic(payload);
+    yield put(searchMusicSuccess({ data: res.data }));
+  } catch (err) {
+    searchMusicFailure({ error: err });
+  }
+}
+
+function* onFetchSearchMusic() {
+  yield takeLatest(musicActionType.SEARCH_MUSIC_START, fetchSearchMusic);
+}
+
+function* fetchComment({ payload }) {
+  try {
+    let res = yield getComment(payload);
+    yield put(getCommentSuccess({ data: res.data }));
+  } catch (err) {
+    getCommentFailure({ error: err });
+  }
+}
+
+function* onFetchComment() {
+  yield takeLatest(musicActionType.GET_COMMENT_START, fetchComment);
+}
+
+function* saveCommentMusic({ payload }) {
+  try {
+    console.log('payload',payload);
+    let res = yield saveComment(payload);
+    yield put(saveCommentSuccess({ data: res.data }));
+  } catch (err) {
+    saveCommentFailure({ error: err });
+  }
+}
+
+function* onSaveCommentMusic() {
+  yield takeLatest(musicActionType.SAVE_COMMENT_START, saveCommentMusic);
+}
 
 export default function* musicSaga() {
   yield all([
     fork(onFetchMusicTop10),
     fork(onCreateMusicStart),
     fork(onFetchMusicByType),
-    fork(onFetchFindMusicById)
+    fork(onFetchFindMusicById),
+    fork(onFetchMyMusic),
+    fork(onFetchSearchMusic),
+    fork(onFetchComment),
+    fork(onSaveCommentMusic)
   ]);
 }

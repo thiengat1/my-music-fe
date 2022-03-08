@@ -1,0 +1,97 @@
+.container {
+    a{
+      text-decoration: none;
+      text-transform: uppercase;
+    }
+  }
+  .mainMenus{
+    //margin-left: 16px;
+    display: flex;
+    flex-direction: column;
+  }
+  .headerLogo{
+    width: 65px;
+    &:hover{
+      cursor: pointer;
+      opacity: 0.8;
+    }
+  }
+  .navLink{
+    margin-right: 8px;
+    padding: 8px 8px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    &:hover{
+      border-bottom:3px solid rgb(231, 217, 154);
+    }
+  }
+  .searchForm{
+    display: flex;
+    align-items: center;
+    position: relative;
+    margin-top: 8px;
+  }
+  .searchFormIcon{
+    position: absolute;
+    right: 20px;
+    color: rgb(171, 159, 159);
+    &:hover{
+      cursor: pointer;
+      opacity: 0.8;
+    }
+  }
+  .rightMenus{
+    display: block;
+  
+  }
+  .rightMenusLogin{
+    display: flex;
+    align-items: center;
+    margin-top: 8px;
+  }
+  .btn{
+    text-transform: uppercase;
+    font-weight: bold;
+    padding: 6px 8px;
+    &:hover{
+      cursor: pointer;
+      opacity: 0.8;
+    }
+  }
+  .btnLogin{
+    margin-right: 8px;
+  }
+  .btnSignUp{
+    background:rgb(174, 226, 53);
+    border-radius: 10px;
+    color: #fff;
+    max-width: 90px;
+  }
+  .navLinkActive{
+    border-bottom:3px solid rgb(231, 217, 154);
+    color:rgb(58, 7, 177)
+  }
+  .myMusic{
+    background:red;
+    border-radius: 10px;
+    color:#fff;
+    cursor: pointer;
+    animation: myMusicBg 2s ease-out 0s infinite;
+    &:hover{
+      border: unset;
+      color: #fff;
+      opacity: 0.8;
+    }
+  }
+  .myMusicIcon{
+    margin-right: 8px;
+  }
+  
+  @keyframes myMusicBg{
+    from{
+      background:rgb(78, 78, 202)
+    }
+    to{
+      background:rgb(58, 150, 58)
+    }
+  }

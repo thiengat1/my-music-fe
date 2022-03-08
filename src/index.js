@@ -2,7 +2,7 @@
  * @Description:
  * @Author: Lewis
  * @Date: 2021-12-14 23:07:08
- * @LastEditTime: 2022-01-24 22:51:50
+ * @LastEditTime: 2022-03-01 23:36:07
  * @LastEditors: Lewis
  */
 import React from "react";
@@ -14,13 +14,22 @@ import "bootstrap/dist/css/bootstrap.css";
 import { BrowserRouter as Router } from "react-router-dom";
 import { Provider } from "react-redux";
 import { store } from "./redux/store";
+import GlobalLoading from "./components/Loading/index";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { library } from "@fortawesome/fontawesome-svg-core";
+import { fas } from "@fortawesome/free-solid-svg-icons";
+import { fab } from '@fortawesome/free-brands-svg-icons';
 
+library.add(fas, fab);
 
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
       <Router>
         <App />
+        <GlobalLoading />
+        <ToastContainer />
       </Router>
     </Provider>
   </React.StrictMode>,

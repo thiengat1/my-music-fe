@@ -2,10 +2,10 @@
  * @Description:
  * @Author: Lewis
  * @Date: 2022-01-08 22:52:56
- * @LastEditTime: 2022-01-25 23:36:34
+ * @LastEditTime: 2022-03-08 21:43:44
  * @LastEditors: Lewis
  */
-import React, { useState } from "react";
+import React, { useState ,useEffect} from "react";
 import { Button, Modal, Form } from "react-bootstrap";
 import { connect } from "react-redux";
 import { createMusicStart } from "../../../redux/music/music.actions";
@@ -13,11 +13,7 @@ import { setShowModal } from "../../../redux/auth/auth.actions";
 import styles from "./CreateForm.module.scss";
 
 const CreateMusic = (props) => {
-  const { showModal, setShowCreateMusicModal, handleCreateMusic, modalType } =
-    props;
-
-  console.log("modalType", modalType);
-  console.log("showModal", showModal);
+  const { showModal, setShowCreateMusicModal, handleCreateMusic, modalType } = props;
 
   const [formErrors, setFormErrors] = useState({});
 
@@ -28,6 +24,17 @@ const CreateMusic = (props) => {
     description: "",
     type: "",
   });
+  useEffect(()=>{
+    return(
+      setFormValue({
+        name: "",
+        image: "",
+        videoId: "",
+        description: "",
+        type: "",
+      })
+    )
+  },[showModal])
   const handleChange = (key, value) => {
     setFormErrors(validate(formValue));
     setFormValue({
@@ -90,7 +97,7 @@ const CreateMusic = (props) => {
             <p className={styles.formError}>{formErrors.name}</p>
           </Form.Group>
           <Form.Group>
-            <Form.Label>Image: </Form.Label>
+            <Form.Label>Image link: </Form.Label>
             <Form.Control
               type="text"
               onChange={(e) => handleChange("image", e.target.value)}
@@ -100,7 +107,7 @@ const CreateMusic = (props) => {
             <p className={styles.formError}>{formErrors.image}</p>
           </Form.Group>
           <Form.Group>
-            <Form.Label>VideoId: </Form.Label>
+            <Form.Label>Youtube Video Id: </Form.Label>
             <Form.Control
               type="text"
               onChange={(e) => handleChange("videoId", e.target.value)}

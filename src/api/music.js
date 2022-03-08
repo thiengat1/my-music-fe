@@ -2,7 +2,7 @@
  * @Description:
  * @Author: Lewis
  * @Date: 2022-01-08 22:55:36
- * @LastEditTime: 2022-01-16 23:15:42
+ * @LastEditTime: 2022-02-18 00:06:46
  * @LastEditors: Lewis
  */
 import request from "./request";
@@ -31,5 +31,19 @@ export function createMusic(data) {
     url: "/music/create",
     method: "post",
     data: data,
+  });
+}
+export function getMyMusic(params) {
+  return request({
+    url: "/music/me",
+    method: "get",
+    params
+  });
+}
+export function searchMusic(params) {
+  return request({
+    url: "/music/search",
+    method: "get",
+    params
   });
 }

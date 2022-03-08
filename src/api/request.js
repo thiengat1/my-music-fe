@@ -2,26 +2,29 @@
  * @Description:
  * @Author: Lewis
  * @Date: 2022-01-06 22:04:53
- * @LastEditTime: 2022-01-24 22:52:31
+ * @LastEditTime: 2022-03-08 23:21:01
  * @LastEditors: Lewis
  */
 
 import axios from "axios";
-import { getToken, setToken, removeToken } from "../utils/auth";
-import queryString from 'query-string'
+import { getToken, setToken } from "../utils/auth";
+import queryString from "query-string";
+import { store } from "../redux/store";
+import { setGlobalLoading,logoutUserStart } from "../redux/auth/auth.actions";
+import { toast } from "react-toastify";
 
-const token = getToken();
+let token = getToken();
 
-console.log('process.env.APP_BASE_API',process.env);
-console.log('token',token)
 const service = axios.create({
-  baseURL: 'http://localhost:3000',
-  paramsSerializer:(params)=>queryString.stringify(params),
+  baseURL: process.env.REACT_APP_API_URL,
+  paramsSerializer: (params) => queryString.stringify(params),
   timeout: 6000,
 });
 
 service.interceptors.request.use(
   (config) => {
+    store.dispatch(setGlobalLoading(true));
+    token = getToken();
     if (token) {
       config.headers["Authorization"] = token;
     }
@@ -34,6 +37,7 @@ service.interceptors.request.use(
 
 service.interceptors.response.use(
   (response) => {
+    store.dispatch(setGlobalLoading(false));
     const res = response.data;
 
     if (!res.code) {
@@ -44,15 +48,21 @@ service.interceptors.response.use(
       if (response.headers.authorization) {
         setToken(response.headers.authorization);
       }
+      store.dispatch(setGlobalLoading(false));
       return res;
     } else {
-      removeToken();
+      store.dispatch(setGlobalLoading(false));
+      store.dispatch(logoutUserStart());
+
       return Promise.reject(res);
     }
   },
   (error) => {
+    toast.error(error.toString());
+    store.dispatch(setGlobalLoading(false));
+    store.dispatch(logoutUserStart());
     return Promise.reject(error);
   }
 );
 
-export default service
+export default service;

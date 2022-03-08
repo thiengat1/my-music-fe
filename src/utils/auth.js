@@ -2,22 +2,35 @@
  * @Description:
  * @Author: Lewis
  * @Date: 2022-01-06 22:34:07
- * @LastEditTime: 2022-01-06 23:28:36
+ * @LastEditTime: 2022-02-24 23:47:17
  * @LastEditors: Lewis
  */
 
 import Cookies from "js-cookie";
 
-const TokenKey = "Admin-Token";
+const tokenKey = "Admin-Token";
+const userNameKey = "Username-Key";
 
 export function getToken() {
-  return Cookies.get(TokenKey);
+  return Cookies.get(tokenKey);
 }
 
 export function setToken(token) {
-  return Cookies.set(TokenKey, token);
+  return Cookies.set(tokenKey, token, { expires: 6000 });
 }
 
 export function removeToken() {
-  return Cookies.remove(TokenKey);
+  return Cookies.remove(tokenKey);
+}
+
+export function getUsername() {
+  return Cookies.get(userNameKey);
+}
+
+export function setUsername(username) {
+  return Cookies.set(userNameKey, username);
+}
+
+export function removeUsername() {
+  return Cookies.remove(userNameKey);
 }

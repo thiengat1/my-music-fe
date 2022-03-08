@@ -1,22 +1,29 @@
-
 /*
  * @Description:
  * @Author: Lewis
  * @Date: 2022-01-08 22:52:56
- * @LastEditTime: 2022-02-06 00:09:46
+ * @LastEditTime: 2022-03-04 00:26:41
  * @LastEditors: Lewis
  */
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Button, Modal, Form } from "react-bootstrap";
 import { connect } from "react-redux";
 import {
   setShowModal,
   createUserStart,
+  loginUserStart,
 } from "../../../redux/auth/auth.actions";
 import styles from "./LoginForm.module.scss";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const LoginForm = (props) => {
-  const { showModal, setShowLoginForm, handleCreateUser, modalType } = props;
+  const {
+    showModal,
+    setShowLoginForm,
+    handleCreateUser,
+    modalType,
+    handleLoginUser,
+  } = props;
 
   const [formErrors, setFormErrors] = useState({});
 
@@ -24,6 +31,13 @@ const LoginForm = (props) => {
     username: "",
     password: "",
   });
+
+  useEffect(() => {
+    return setFormValue({
+      username: "",
+      password: "",
+    });
+  }, [showModal]);
   const handleChange = (key, value) => {
     setFormErrors(validate(formValue));
     setFormValue({
@@ -36,11 +50,11 @@ const LoginForm = (props) => {
     setFormErrors(validate(formValue));
     const error = validate(formValue);
     if (Object.keys(error).length <= 0) {
-      handleCreateUser(formValue);
-      setFormValue({
-        username: "",
-        password: "",
-      })
+      if (modalType === "signUp") {
+        handleCreateUser(formValue);
+      } else {
+        handleLoginUser(formValue);
+      }
     }
   };
 
@@ -63,36 +77,60 @@ const LoginForm = (props) => {
     return modalType === "signUp" ? "Sign up" : "Login";
   };
 
+  const handleKeyPress = (e) => {
+    if (e.code === "Enter") {
+      handleSave();
+    }
+  };
+
   return (
     <>
-      <Modal show={showModal && modalType !== "createMusic"} onHide={handleClose}>
-        <Modal.Header closeButton>
-          <Modal.Title>{handleGetModalType()}</Modal.Title>
+      <Modal
+        show={showModal && modalType !== "createMusic"}
+        onHide={handleClose}
+      >
+        <Modal.Header closeButton className={styles.loginHeader}>
+          <Modal.Title className={styles.loginTitle}>
+            {handleGetModalType()}
+          </Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <Form.Group>
-            <Form.Label>Username: </Form.Label>
+          <Form.Group className={`${styles.loginUser} ${styles.loginUsername}`}>
+            <FontAwesomeIcon
+              className={styles.usernameIcon}
+              icon="fa-solid fa-user"
+            />
             <Form.Control
               type="text"
               onChange={(e) => handleChange("username", e.target.value)}
               value={formValue.username}
-              placeholder="username input"
+              placeholder="username"
+              className={styles.usernameInput}
             />
-            <p className={styles.formError}>{formErrors.username}</p>
           </Form.Group>
-          <Form.Group>
-            <Form.Label>Password: </Form.Label>
+          <p className={styles.formError}>{formErrors.username}</p>
+          <Form.Group className={`${styles.loginUser} ${styles.loginPassword}`}>
+            <FontAwesomeIcon
+              className={styles.passwordIcon}
+              icon="fa-solid fa-lock"
+            />
             <Form.Control
               type="password"
               onChange={(e) => handleChange("password", e.target.value)}
               value={formValue.password}
-              placeholder="password input"
+              placeholder="password"
+              onKeyPress={handleKeyPress}
+              className={styles.passwordInput}
             />
-            <p className={styles.formError}>{formErrors.password}</p>
           </Form.Group>
+          <p className={styles.formError}>{formErrors.password}</p>
         </Modal.Body>
-        <Modal.Footer>
-          <Button variant="primary" onClick={handleSave}>
+        <Modal.Footer className={styles.loginFooter}>
+          <Button
+            variant="primary"
+            onClick={handleSave}
+            className={styles.btnLogin}
+          >
             {handleGetModalType()}
           </Button>
         </Modal.Footer>
@@ -107,6 +145,7 @@ const mapSateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   setShowLoginForm: (payload) => dispatch(setShowModal(payload)),
   handleCreateUser: (payload) => dispatch(createUserStart(payload)),
+  handleLoginUser: (payload) => dispatch(loginUserStart(payload)),
 });
 
 export default connect(mapSateToProps, mapDispatchToProps)(LoginForm);

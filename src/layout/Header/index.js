@@ -2,84 +2,185 @@
  * @Description:
  * @Author: Lewis
  * @Date: 2022-01-02 16:23:02
- * @LastEditTime: 2022-01-28 22:57:42
+ * @LastEditTime: 2022-03-06 17:30:58
  * @LastEditors: Lewis
  */
 
-import React from "react";
-import { Navbar, Container, Nav, NavDropdown } from "react-bootstrap";
-import CreateMusicModal from "../../views/Music/CreateMusic";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import React, { useState } from "react";
+import { FormControl, Navbar, NavDropdown} from "react-bootstrap";
 import { connect } from "react-redux";
-import { Link } from "react-router-dom";
-import { setShowModal, setModalType } from "../../redux/auth/auth.actions";
-import styles from "./Header.module.scss";
+import { Link, useNavigate } from "react-router-dom";
+import logoSrc from "../../assets/dance-music.gif";
+import Avatar from "../../components/Avatar";
+import {
+  logoutUserStart,
+  setModalType,
+  setShowModal,
+} from "../../redux/auth/auth.actions";
+
 import LoginForm from "../../views/Auth/components/LoginForm";
+import CreateMusicModal from "../../views/Music/CreateMusic";
+import styles from "./Header.module.scss";
+import MenuLeft from "../MenuLeft";
 
 const Header = (props) => {
-  const { setShowModal, setModalType,modalType } = props;
+  const {
+    setShowModal,
+    setModalType,
+    modalType,
+    handleLogoutUser,
+    token,
+    username,
+  } = props;
+  const [searchVal, setSearchVal] = useState("");
+  const [active, setActive] = useState("");
+  const [showCanvas,setShowCanvas]=useState(false);
 
+  const navigate = useNavigate();
   const handleOpenModal = (type) => {
-      console.log('type',type);
     setShowModal(true);
     setModalType(type);
   };
+  const handleLogout = () => {
+    handleLogoutUser();
+  };
+
+  const handleSearchMusic = () => {
+    navigate("/music/search?q=" + searchVal);
+  };
+
+  const handleKeyPress = (e) => {
+    if (e.code === "Enter") {
+      handleSearchMusic();
+    }
+  };
+  const handleToHome = () => {
+    navigate("/");
+    setActive("");
+  };
+
+  const links = [
+    { id: 1, link: "/music/hot", name: "hot" },
+    { id: 2, link: "/music/ballad", name: "ballad" },
+    { id: 3, link: "/music/rock", name: "rock" },
+    { id: 4, link: "/music/rap", name: "rap" },
+    // { id: 5, link: "/music/me", name: "my music" },
+  ];
+  const handleLinkClick = (id) => {
+    setActive(id);
+  };
+
+  const handleCloseCanvas=()=>{
+    setShowCanvas(false)
+  }
+  const handleMobileMenuClick=()=>{
+    setShowCanvas(!showCanvas)
+  }
 
   return (
-    <Navbar
-      bg="dark"
-      expand="lg"
-      variant="dark"
-      fixed="top"
-      className={styles.container}
-    >
-      <Container>
-        <Navbar.Brand>
-          <Link to="/">My Music</Link>
-        </Navbar.Brand>
-        <Navbar.Toggle aria-controls="basic-navbar-nav" />
-        <Navbar.Collapse id="basic-navbar-nav">
-          <Nav className={styles.menuMain}>
-            <div className="d-flex">
-              <Nav.Link>
-                <Link to="/music/hot">Hot</Link>
-              </Nav.Link>
-              <Nav.Link>
-                <Link to="/music/ballad">Ballad</Link>
-              </Nav.Link>
-              <Nav.Link>
-                <Link to="/music/rock">Rock</Link>
-              </Nav.Link>
-              <Nav.Link>
-                <Link to="/music/rap">Rap</Link>
-              </Nav.Link>
+    <Navbar fixed="top"  bg="light" className={styles.navBarMain}>
+      <FontAwesomeIcon className={styles.headerMobile} icon="fa-solid fa-bars" onClick={handleMobileMenuClick}/>
+      <div className={styles.container}>
+      <div className={styles.headerLogo} onClick={handleToHome}>
+        <img src={logoSrc} alt="logo" width="100%" height="100%" />
+      </div>
+      <div className={styles.mainMenus}>
+        {links.map((link) => (
+          <Link
+            className={`${styles.navLink} ${
+              active === link.id ? styles.navLinkActive : ""
+            }`}
+            to={link.link}
+            onClick={() => handleLinkClick(link.id)}
+            key={link.id}
+          >
+            {link.name}
+          </Link>
+        ))}
+        {token && (
+          <Link
+            className={`${styles.navLink} ${styles.myMusic}`}
+            to="/music/me"
+            onClick={() => handleLinkClick()}
+          >
+            <FontAwesomeIcon
+              className={`${styles.myMusicIcon}`}
+              icon="fa-solid fa-headphones"
+            />
+            <span>my music</span>
+          </Link>
+        )}
+      </div>
+      <div className={styles.searchForm}>
+        <FormControl
+          type="text"
+          placeholder="search..."
+          className="me-2"
+          aria-label="Search"
+          value={searchVal}
+          onChange={(e) => setSearchVal(e.target.value)}
+          onKeyPress={handleKeyPress}
+        />
+        <FontAwesomeIcon
+          className={styles.searchFormIcon}
+          icon="fa-solid fa-magnifying-glass"
+        />
+      </div>
+      <div className={styles.rightMenus}>
+        {!token && (
+          <>
+            <div
+              className={`${styles.btn} ${styles.btnLogin}`}
+              onClick={() => handleOpenModal("login")}
+            >
+              Login
             </div>
-            <div className="d-flex">
-        
-              <Nav.Link onClick={()=>handleOpenModal('login')}>Login</Nav.Link>
-              <Nav.Link onClick={()=>handleOpenModal('signUp')}>Sing up</Nav.Link>
-              <NavDropdown title="lewis" id="basic-nav-dropdown">
-                <NavDropdown.Item onClick={()=>handleOpenModal('createMusic')}>
+            <div
+              className={`${styles.btn} ${styles.btnSignUp}`}
+              onClick={() => handleOpenModal("signUp")}
+            >
+              Sign up
+            </div>
+          </>
+        )}
+        {token && (
+          <>
+            <div className={styles.rightMenus}>
+              <Avatar type="header" />
+              <NavDropdown title={username} id="basic-nav-dropdown">
+                <NavDropdown.Item
+                  onClick={() => handleOpenModal("createMusic")}
+                >
                   Create Music
                 </NavDropdown.Item>
                 <NavDropdown.Divider />
-                <NavDropdown.Item href="#action/3.4">Logout</NavDropdown.Item>
+                <NavDropdown.Item onClick={handleLogout}>
+                  Logout
+                </NavDropdown.Item>
               </NavDropdown>
             </div>
-          </Nav>
-        </Navbar.Collapse>
-      </Container>
-      <CreateMusicModal modalType={modalType}/>
-      <LoginForm modalType={modalType}/>
+          </>
+        )}
+      </div>
+
+      <CreateMusicModal modalType={modalType} />
+      <LoginForm modalType={modalType} />
+      <MenuLeft show={showCanvas} handleClose={handleCloseCanvas}/>
+      </div>
     </Navbar>
   );
 };
 
 const mapStateToProps = (state) => ({
   modalType: state.auth.modalType,
+  token: state.auth.token,
+  username: state.auth.username,
 });
 const mapDispatchToProps = (dispatch) => ({
   setShowModal: (params) => dispatch(setShowModal(params)),
   setModalType: (params) => dispatch(setModalType(params)),
+  handleLogoutUser: (params) => dispatch(logoutUserStart(params)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Header);

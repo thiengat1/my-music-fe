@@ -2,15 +2,16 @@
  * @Description:
  * @Author: Lewis
  * @Date: 2022-01-14 23:46:05
- * @LastEditTime: 2022-01-24 23:17:45
+ * @LastEditTime: 2022-03-01 22:47:57
  * @LastEditors: Lewis
  */
 import React, { useEffect } from "react";
-import { Row, Col, Card, Button } from "react-bootstrap";
 import { connect } from "react-redux";
 import { useParams } from "react-router-dom";
-import styles from "./MusicType.module.scss";
+import MusicCard from "../../../components/MusicCard";
 import { getMusicByTypeStart } from "../../../redux/music/music.actions";
+import styles from "./MusicType.module.scss";
+import NoData from "../../../components/NoData";
 
 const MusicType = (props) => {
   const { musicByType, handleGetMusicByType } = props;
@@ -21,46 +22,11 @@ const MusicType = (props) => {
     handleGetMusicByType({ type: type });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [type]);
-  const handleView = (videoId) => {
-    window.location.href = `/music/view/${videoId}`;
-  };
 
   return (
     <div className={styles.container}>
-      <Row>
-        {musicByType.map((item) => {
-          return (
-            <Col xs={4} md={4} key={item.id}>
-              <Card>
-                <Card.Img
-                  variant="top"
-                  src={item.image}
-                  className={styles.cardImage}
-                  onClick={() => handleView(item.videoId)}
-                />
-                <Card.Body>
-                  <Card.Title
-                    className={styles.cartTitle}
-                    onClick={() => handleView(item.videoId)}
-                  >
-                    {item.name}
-                  </Card.Title>
-                  <Card.Text className={styles.cartDescription}>
-                    {item.description}
-                  </Card.Text>
-                  <Button
-                    variant="primary"
-                    className={styles.viewButton}
-                    onClick={() => handleView(item.videoId)}
-                  >
-                    View
-                  </Button>
-                </Card.Body>
-              </Card>
-            </Col>
-          );
-        })}
-      </Row>
+      {musicByType.length > 0 && <MusicCard data={musicByType} />}
+      {musicByType.length <= 0 && <NoData />}
     </div>
   );
 };

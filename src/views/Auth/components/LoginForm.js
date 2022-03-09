@@ -2,7 +2,7 @@
  * @Description:
  * @Author: Lewis
  * @Date: 2022-01-08 22:52:56
- * @LastEditTime: 2022-03-04 00:26:41
+ * @LastEditTime: 2022-03-09 17:24:14
  * @LastEditors: Lewis
  */
 import React, { useState, useEffect } from "react";
@@ -70,6 +70,9 @@ const LoginForm = (props) => {
     }
     if (!values.password) {
       errors.password = "Password is required";
+    }
+    if (values.password.length < 6) {
+      errors.password = "Password must be more than 6 characters";
     }
     return errors;
   };

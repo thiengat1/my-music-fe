@@ -2,7 +2,7 @@
  * @Description:
  * @Author: Lewis
  * @Date: 2022-02-20 23:35:36
- * @LastEditTime: 2022-03-05 23:56:54
+ * @LastEditTime: 2022-03-09 16:48:05
  * @LastEditors: Lewis
  */
 import React, { useEffect, useState } from "react";
@@ -70,7 +70,7 @@ const CommentForm = (props) => {
       {currentComment &&
         currentComment.map((item, index) => (
           <div className={styles.commentHistory} key={index}>
-            <Avatar />
+            <Avatar username={item.username}/>
             <div className={styles.commentHistoryContent}>
               <div className={styles.commentHistoryAuthor}>
                 <span className={styles.commentHistoryAuthorName}>

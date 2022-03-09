@@ -2,7 +2,7 @@
  * @Description:
  * @Author: Lewis
  * @Date: 2022-01-09 16:47:09
- * @LastEditTime: 2022-01-16 23:39:43
+ * @LastEditTime: 2022-03-09 16:54:46
  * @LastEditors: Lewis
  */
 import React, { useState } from "react";
@@ -23,7 +23,7 @@ const HomeCarousel = (props) => {
   };
 
   return (
-    <Carousel activeIndex={index} onSelect={handleSelect}>
+    <Carousel activeIndex={index} onSelect={handleSelect} className={styles.container}>
       {data.map((item, index) => {
         return (
           <Carousel.Item key={index}>

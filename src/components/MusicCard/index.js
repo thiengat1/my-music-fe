@@ -2,7 +2,7 @@
  * @Description:
  * @Author: Lewis
  * @Date: 2022-02-16 23:47:47
- * @LastEditTime: 2022-03-06 17:39:49
+ * @LastEditTime: 2022-03-09 17:05:47
  * @LastEditors: Lewis
  */
 import React from "react";
@@ -21,7 +21,7 @@ const MusicCard = (props) => {
     <Row>
       {data.map((item,index) => {
         return (
-          <Col xs={6} md={4} key={index}>
+          <Col xs={6} md={4} lg={3} xl={3} key={index}>
             <Card className={styles.container}> 
               <Card.Img
                 variant="top"

@@ -2,7 +2,7 @@
  * @Description:
  * @Author: Lewis
  * @Date: 2022-01-02 16:23:02
- * @LastEditTime: 2022-03-06 17:30:58
+ * @LastEditTime: 2022-03-09 16:49:32
  * @LastEditors: Lewis
  */
 
@@ -147,7 +147,7 @@ const Header = (props) => {
         {token && (
           <>
             <div className={styles.rightMenus}>
-              <Avatar type="header" />
+              <Avatar type="header" username={username}/>
               <NavDropdown title={username} id="basic-nav-dropdown">
                 <NavDropdown.Item
                   onClick={() => handleOpenModal("createMusic")}

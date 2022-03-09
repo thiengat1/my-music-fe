@@ -2,7 +2,7 @@
  * @Description:
  * @Author: Lewis
  * @Date: 2022-01-08 22:52:56
- * @LastEditTime: 2022-03-09 17:24:14
+ * @LastEditTime: 2022-03-09 17:29:40
  * @LastEditors: Lewis
  */
 import React, { useState, useEffect } from "react";
@@ -68,12 +68,13 @@ const LoginForm = (props) => {
     if (!values.username) {
       errors.username = "Username is required";
     }
-    if (!values.password) {
-      errors.password = "Password is required";
-    }
     if (values.password.length < 6) {
       errors.password = "Password must be more than 6 characters";
     }
+    if (!values.password) {
+      errors.password = "Password is required";
+    }
+
     return errors;
   };
   const handleGetModalType = () => {

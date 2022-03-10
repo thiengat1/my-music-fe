@@ -2,7 +2,7 @@
  * @Description:
  * @Author: Lewis
  * @Date: 2022-01-08 22:52:56
- * @LastEditTime: 2022-03-08 21:43:44
+ * @LastEditTime: 2022-03-10 10:20:04
  * @LastEditors: Lewis
  */
 import React, { useState ,useEffect} from "react";
@@ -36,7 +36,7 @@ const CreateMusic = (props) => {
     )
   },[showModal])
   const handleChange = (key, value) => {
-    setFormErrors(validate(formValue));
+    //setFormErrors(validate(formValue));
     setFormValue({
       ...formValue,
       [key]: value,

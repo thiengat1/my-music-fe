@@ -2,7 +2,7 @@
  * @Description:
  * @Author: Lewis
  * @Date: 2022-01-09 23:15:09
- * @LastEditTime: 2022-03-05 23:45:50
+ * @LastEditTime: 2022-03-10 15:38:49
  * @LastEditors: Lewis
  */
 
@@ -135,7 +135,6 @@ function* onFetchComment() {
 
 function* saveCommentMusic({ payload }) {
   try {
-    console.log('payload',payload);
     let res = yield saveComment(payload);
     yield put(saveCommentSuccess({ data: res.data }));
   } catch (err) {

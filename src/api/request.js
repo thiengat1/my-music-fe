@@ -2,7 +2,7 @@
  * @Description:
  * @Author: Lewis
  * @Date: 2022-01-06 22:04:53
- * @LastEditTime: 2022-03-10 15:27:08
+ * @LastEditTime: 2022-03-10 15:32:34
  * @LastEditors: Lewis
  */
 
@@ -39,7 +39,6 @@ service.interceptors.request.use(
 
 service.interceptors.response.use(
   (response) => {
-    console.log(555555);
     store.dispatch(setGlobalLoading(false));
     const res = response.data;
 

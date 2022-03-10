@@ -2,7 +2,7 @@
  * @Description:
  * @Author: Lewis
  * @Date: 2022-01-06 22:04:53
- * @LastEditTime: 2022-03-08 23:21:01
+ * @LastEditTime: 2022-03-10 15:27:08
  * @LastEditors: Lewis
  */
 
@@ -23,7 +23,9 @@ const service = axios.create({
 
 service.interceptors.request.use(
   (config) => {
-    store.dispatch(setGlobalLoading(true));
+    if(config.url!=='/comment/save'){
+      store.dispatch(setGlobalLoading(true));
+    }
     token = getToken();
     if (token) {
       config.headers["Authorization"] = token;
@@ -37,6 +39,7 @@ service.interceptors.request.use(
 
 service.interceptors.response.use(
   (response) => {
+    console.log(555555);
     store.dispatch(setGlobalLoading(false));
     const res = response.data;
 

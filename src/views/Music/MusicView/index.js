@@ -2,7 +2,7 @@
  * @Description:
  * @Author: Lewis
  * @Date: 2022-01-16 17:05:55
- * @LastEditTime: 2022-03-08 21:49:14
+ * @LastEditTime: 2022-03-10 15:29:30
  * @LastEditors: Lewis
  */
 import React, { useEffect } from "react";
@@ -27,10 +27,9 @@ const MusicView = (props) => {
         height="500px"
         src={`https://www.youtube.com/embed/${musicById.videoId}`}
         title="YouTube video player"
-        frameborder="0"
+        frameBorder="0"
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-        allowfullscreen
-        SECURE_REFERRER_POLICY="no-referrer-when-downgrade"
+        allowFullScreen
       ></iframe>
       <h3>{musicById.name}</h3>
       <p>{musicById.description}</p>

@@ -2,7 +2,7 @@
  * @Description:
  * @Author: Lewis
  * @Date: 2022-01-06 22:34:07
- * @LastEditTime: 2022-02-24 23:47:17
+ * @LastEditTime: 2022-03-11 13:12:49
  * @LastEditors: Lewis
  */
 
@@ -16,7 +16,7 @@ export function getToken() {
 }
 
 export function setToken(token) {
-  return Cookies.set(tokenKey, token, { expires: 6000 });
+  return Cookies.set(tokenKey, token, { expires: 1 });
 }
 
 export function removeToken() {

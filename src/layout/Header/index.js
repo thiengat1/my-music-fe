@@ -2,13 +2,13 @@
  * @Description:
  * @Author: Lewis
  * @Date: 2022-01-02 16:23:02
- * @LastEditTime: 2022-03-09 16:49:32
+ * @LastEditTime: 2022-03-11 13:16:39
  * @LastEditors: Lewis
  */
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useState } from "react";
-import { FormControl, Navbar, NavDropdown} from "react-bootstrap";
+import { FormControl, Navbar, NavDropdown } from "react-bootstrap";
 import { connect } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import logoSrc from "../../assets/dance-music.gif";
@@ -35,7 +35,7 @@ const Header = (props) => {
   } = props;
   const [searchVal, setSearchVal] = useState("");
   const [active, setActive] = useState("");
-  const [showCanvas,setShowCanvas]=useState(false);
+  const [showCanvas, setShowCanvas] = useState(false);
 
   const navigate = useNavigate();
   const handleOpenModal = (type) => {
@@ -59,7 +59,8 @@ const Header = (props) => {
     navigate("/");
     setActive("");
   };
-
+  console.log("username", username);
+  console.log("token", token);
   const links = [
     { id: 1, link: "/music/hot", name: "hot" },
     { id: 2, link: "/music/ballad", name: "ballad" },
@@ -71,102 +72,106 @@ const Header = (props) => {
     setActive(id);
   };
 
-  const handleCloseCanvas=()=>{
-    setShowCanvas(false)
-  }
-  const handleMobileMenuClick=()=>{
-    setShowCanvas(!showCanvas)
-  }
+  const handleCloseCanvas = () => {
+    setShowCanvas(false);
+  };
+  const handleMobileMenuClick = () => {
+    setShowCanvas(!showCanvas);
+  };
 
   return (
-    <Navbar fixed="top"  bg="light" className={styles.navBarMain}>
-      <FontAwesomeIcon className={styles.headerMobile} icon="fa-solid fa-bars" onClick={handleMobileMenuClick}/>
+    <Navbar fixed="top" bg="light" className={styles.navBarMain}>
+      <FontAwesomeIcon
+        className={styles.headerMobile}
+        icon="fa-solid fa-bars"
+        onClick={handleMobileMenuClick}
+      />
       <div className={styles.container}>
-      <div className={styles.headerLogo} onClick={handleToHome}>
-        <img src={logoSrc} alt="logo" width="100%" height="100%" />
-      </div>
-      <div className={styles.mainMenus}>
-        {links.map((link) => (
-          <Link
-            className={`${styles.navLink} ${
-              active === link.id ? styles.navLinkActive : ""
-            }`}
-            to={link.link}
-            onClick={() => handleLinkClick(link.id)}
-            key={link.id}
-          >
-            {link.name}
-          </Link>
-        ))}
-        {token && (
-          <Link
-            className={`${styles.navLink} ${styles.myMusic}`}
-            to="/music/me"
-            onClick={() => handleLinkClick()}
-          >
-            <FontAwesomeIcon
-              className={`${styles.myMusicIcon}`}
-              icon="fa-solid fa-headphones"
-            />
-            <span>my music</span>
-          </Link>
-        )}
-      </div>
-      <div className={styles.searchForm}>
-        <FormControl
-          type="text"
-          placeholder="search..."
-          className="me-2"
-          aria-label="Search"
-          value={searchVal}
-          onChange={(e) => setSearchVal(e.target.value)}
-          onKeyPress={handleKeyPress}
-        />
-        <FontAwesomeIcon
-          className={styles.searchFormIcon}
-          icon="fa-solid fa-magnifying-glass"
-        />
-      </div>
-      <div className={styles.rightMenus}>
-        {!token && (
-          <>
-            <div
-              className={`${styles.btn} ${styles.btnLogin}`}
-              onClick={() => handleOpenModal("login")}
+        <div className={styles.headerLogo} onClick={handleToHome}>
+          <img src={logoSrc} alt="logo" width="100%" height="100%" />
+        </div>
+        <div className={styles.mainMenus}>
+          {links.map((link) => (
+            <Link
+              className={`${styles.navLink} ${
+                active === link.id ? styles.navLinkActive : ""
+              }`}
+              to={link.link}
+              onClick={() => handleLinkClick(link.id)}
+              key={link.id}
             >
-              Login
-            </div>
-            <div
-              className={`${styles.btn} ${styles.btnSignUp}`}
-              onClick={() => handleOpenModal("signUp")}
+              {link.name}
+            </Link>
+          ))}
+          {token && (
+            <Link
+              className={`${styles.navLink} ${styles.myMusic}`}
+              to="/music/me"
+              onClick={() => handleLinkClick()}
             >
-              Sign up
-            </div>
-          </>
-        )}
-        {token && (
-          <>
-            <div className={styles.rightMenus}>
-              <Avatar type="header" username={username}/>
-              <NavDropdown title={username} id="basic-nav-dropdown">
-                <NavDropdown.Item
-                  onClick={() => handleOpenModal("createMusic")}
-                >
-                  Create Music
-                </NavDropdown.Item>
-                <NavDropdown.Divider />
-                <NavDropdown.Item onClick={handleLogout}>
-                  Logout
-                </NavDropdown.Item>
-              </NavDropdown>
-            </div>
-          </>
-        )}
-      </div>
+              <FontAwesomeIcon
+                className={`${styles.myMusicIcon}`}
+                icon="fa-solid fa-headphones"
+              />
+              <span>my music</span>
+            </Link>
+          )}
+        </div>
+        <div className={styles.searchForm}>
+          <FormControl
+            type="text"
+            placeholder="search..."
+            className="me-2"
+            aria-label="Search"
+            value={searchVal}
+            onChange={(e) => setSearchVal(e.target.value)}
+            onKeyPress={handleKeyPress}
+          />
+          <FontAwesomeIcon
+            className={styles.searchFormIcon}
+            icon="fa-solid fa-magnifying-glass"
+          />
+        </div>
+        <div className={styles.rightMenus}>
+          {(!token || !username) && (
+            <>
+              <div
+                className={`${styles.btn} ${styles.btnLogin}`}
+                onClick={() => handleOpenModal("login")}
+              >
+                Login
+              </div>
+              <div
+                className={`${styles.btn} ${styles.btnSignUp}`}
+                onClick={() => handleOpenModal("signUp")}
+              >
+                Sign up
+              </div>
+            </>
+          )}
+          {token && username && (
+            <>
+              <div className={styles.rightMenus}>
+                <Avatar type="header" username={username} />
+                <NavDropdown title={username} id="basic-nav-dropdown">
+                  <NavDropdown.Item
+                    onClick={() => handleOpenModal("createMusic")}
+                  >
+                    Create Music
+                  </NavDropdown.Item>
+                  <NavDropdown.Divider />
+                  <NavDropdown.Item onClick={handleLogout}>
+                    Logout
+                  </NavDropdown.Item>
+                </NavDropdown>
+              </div>
+            </>
+          )}
+        </div>
 
-      <CreateMusicModal modalType={modalType} />
-      <LoginForm modalType={modalType} />
-      <MenuLeft show={showCanvas} handleClose={handleCloseCanvas}/>
+        <CreateMusicModal modalType={modalType} />
+        <LoginForm modalType={modalType} />
+        <MenuLeft show={showCanvas} handleClose={handleCloseCanvas} />
       </div>
     </Navbar>
   );

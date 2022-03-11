@@ -2,7 +2,7 @@
  * @Description:
  * @Author: Lewis
  * @Date: 2022-01-02 16:23:02
- * @LastEditTime: 2022-03-11 13:16:39
+ * @LastEditTime: 2022-03-11 13:22:04
  * @LastEditors: Lewis
  */
 
@@ -59,8 +59,6 @@ const Header = (props) => {
     navigate("/");
     setActive("");
   };
-  console.log("username", username);
-  console.log("token", token);
   const links = [
     { id: 1, link: "/music/hot", name: "hot" },
     { id: 2, link: "/music/ballad", name: "ballad" },
